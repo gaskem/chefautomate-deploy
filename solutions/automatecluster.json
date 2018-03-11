@@ -24,7 +24,7 @@
       "metadata": {
         "description": "Password to be assigned to the admin user."
       },
-      "defaultValue": "P@ssw0rd!"
+      "defaultValue": "April!aTuon0@"
     },
 
     "automateLicense": {
@@ -64,7 +64,7 @@
       "metadata": {
         "description": "Password for the specified Chef user"
       },
-      "defaultValue": "P@ssw0rd!"
+      "defaultValue": "Sup3rmot0KT$"
     },
 
     "chefOrg": {
