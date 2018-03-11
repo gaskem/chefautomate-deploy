@@ -227,6 +227,9 @@
             "vmName": {
               "value": "[variables('name').vm]"
             },
+            "azName": {
+              "value": "[parameters('azurename')]"
+            },
             "computerName": {
               "value": "[variables('name').computer]"
             },
