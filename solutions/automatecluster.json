@@ -574,7 +574,7 @@
         },
         "parameters": {
           "name": {
-            "value": "[variables('name').computer.orchestrationserver]"
+            "value": "sra3ta-aapp02"
           },
           "vmSize": {
             "value": "[variables('vmSizes').orchestration]"
@@ -675,7 +675,7 @@
         },
         "parameters": {
           "name": {
-            "value": "[variables('name').computer.chef]"
+            "value": "sra3ta-aapp01"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
@@ -727,7 +727,7 @@
         },
         "parameters": {
           "name": {
-            "value": "[variables('name').computer.automate]"
+            "value": "sra3ta-aapp03"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
@@ -851,7 +851,7 @@
         },
         "parameters": {
           "name": {
-            "value": "[variables('name').computer.workstation]"
+            "value": "sra3ta-aapp05"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
