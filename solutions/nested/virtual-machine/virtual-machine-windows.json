@@ -9,7 +9,12 @@
         "description": "Name of the VM as it will appear in Azure"
       }
     },
-
+    "azname": {
+      "type": "string",
+      "metadata": {
+        "description": "Hostname for the machine, which will also be the Public FQDN name.  For Windows machines this must be 15 characters or less"
+      }
+    },
     "computerName": {
       "type": "string",
       "metadata": {
@@ -115,13 +120,13 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "[variables('name').disk.os]",
+            "name": "[variables('azname').disk.os]",
             "caching": "ReadOnly",
             "createOption": "FromImage"
           },
           "dataDisks": [
             {
-              "name": "[variables('name').disk.data]",
+              "name": "[variables('azname').disk.data]",
               "diskSizeGB": "100",
               "lun": 0,
               "createOption": "Empty"
