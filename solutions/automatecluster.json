@@ -390,14 +390,14 @@
 
     "name": {
       "storageAccountName": "[variables('unique')]",
-      "virtualNetwork": "[concat(parameters('prefix'), '-', variables('uniqueShort'), '-VNet')]",
-      "subnet": "[concat(parameters('prefix'), '-', variables('uniqueShort'), '-Subnet')]",
+      "virtualNetwork": "sra3ta-chef-VNet",
+      "subnet": "sra3ta-chef-Subnet",
       "vm": {
         "chef": "sra3ta-aapp01",
         "orchestrationserver": "sra3ta-aapp02",
         "automate": "sra3ta-aapp03",
-        "compliance": "sra3ta-aapp04",
-        "workstation": "sra3ta-aapp05"
+        "compliance": "sra3ta-aapp05",
+        "workstation": "sra3ta-aapp04"
       },
       "computer": {
         "chef": "[concat(parameters('prefix'), '-chef-', variables('uniqueShort'))]",
@@ -574,6 +574,9 @@
         },
         "parameters": {
           "name": {
+            "value": "[variables('name').computer.orchestrationserver]"
+          },
+          "azurename": {
             "value": "sra3ta-aapp02"
           },
           "vmSize": {
@@ -675,6 +678,9 @@
         },
         "parameters": {
           "name": {
+            "value": "[variables('name').computer.chef]"
+          },
+          "azurename": {
             "value": "sra3ta-aapp01"
           },
           "adminUsername": {
@@ -727,6 +733,9 @@
         },
         "parameters": {
           "name": {
+            "value": "[variables('name').computer.automate]"
+          },
+          "azurename": {
             "value": "sra3ta-aapp03"
           },
           "adminUsername": {
@@ -851,7 +860,10 @@
         },
         "parameters": {
           "name": {
-            "value": "sra3ta-aapp05"
+            "value": "[variables('name').computer.workstation]"
+          },
+          "azurename": {
+            "value": "sra3ta-aapp04"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
