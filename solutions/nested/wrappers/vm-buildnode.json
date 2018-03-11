@@ -116,7 +116,7 @@
     "name": {
       "vm": "[parameters('azurename')]",
       "nic": "[concat(parameters('azurename'), '-NIC')]",
-      "publicIPAddress": "[concat(parameters('name'), '-PublicIP')]",
+      "publicIPAddress": "[concat(parameters('azurename'), '-PublicIP')]",
       "dns": "[parameters('name')]",
       "computer": "[parameters('name')]",
       "extension": {
