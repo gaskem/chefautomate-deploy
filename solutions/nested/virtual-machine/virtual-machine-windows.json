@@ -9,12 +9,6 @@
         "description": "Name of the VM as it will appear in Azure"
       }
     },
-    "azname": {
-      "type": "string",
-      "metadata": {
-        "description": "Hostname for the machine, which will also be the Public FQDN name.  For Windows machines this must be 15 characters or less"
-      }
-    },
     "computerName": {
       "type": "string",
       "metadata": {
@@ -71,8 +65,8 @@
         "containerName": "[parameters('storageAccountContainerName')]"
       },
       "disk": {
-        "os": "[concat(parameters('computerName'), '-OSDisk')]",
-        "data": "[concat(parameters('computerName'), '-DataDisk')]"
+        "os": "[concat(parameters('vmName'), '-OSDisk')]",
+        "data": "[concat(parameters('vmName'), '-DataDisk')]"
       }
     },
 
@@ -120,13 +114,13 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "[variables('azname').disk.os]",
+            "name": "[variables('vmName').disk.os]",
             "caching": "ReadOnly",
             "createOption": "FromImage"
           },
           "dataDisks": [
             {
-              "name": "[variables('azname').disk.data]",
+              "name": "[variables('vmName').disk.data]",
               "diskSizeGB": "100",
               "lun": 0,
               "createOption": "Empty"
