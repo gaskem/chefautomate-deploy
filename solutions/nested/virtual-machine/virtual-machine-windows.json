@@ -114,13 +114,13 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "[parameters('vmName').disk.os]",
+            "name": "[parameters('name').disk.os]",
             "caching": "ReadOnly",
             "createOption": "FromImage"
           },
           "dataDisks": [
             {
-              "name": "[parameters('vmName').disk.data]",
+              "name": "[parameters('name').disk.data]",
               "diskSizeGB": "100",
               "lun": 0,
               "createOption": "Empty"
