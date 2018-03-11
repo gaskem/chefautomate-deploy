@@ -9,7 +9,12 @@
         "description": "Hostname for the machine, which will also be the Public FQDN name.  For Windows machines this must be 15 characters or less"
       }
     },
-
+    "azurename": {
+      "type": "string",
+      "metadata": {
+        "description": "Hostname for the machine, which will also be the Public FQDN name.  For Windows machines this must be 15 characters or less"
+      }
+    },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -115,8 +120,8 @@
     "location": "[resourceGroup().location]",
 
     "name": {
-      "vm": "[concat(parameters('name'), '-VM')]",
-      "nic": "[concat(parameters('name'), '-NIC')]",
+      "vm": "[parameters('azurename')]",
+      "nic": "[concat(parameters('azurename'), '-NIC')]",
       "publicIPAddress": "[concat(parameters('name'), '-PublicIP')]",
       "dns": "[parameters('name')]",
       "computer": "[parameters('name')]",
