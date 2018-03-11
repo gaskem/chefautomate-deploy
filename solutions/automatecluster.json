@@ -384,11 +384,11 @@
       "virtualNetwork": "[concat(parameters('prefix'), '-', variables('uniqueShort'), '-VNet')]",
       "subnet": "[concat(parameters('prefix'), '-', variables('uniqueShort'), '-Subnet')]",
       "vm": {
-        "chef": "[concat(parameters('prefix'), '-chef-', variables('uniqueShort'), '-VM')]",
-        "orchestrationserver": "[concat(parameters('prefix'), '-orchestrator-', variables('uniqueShort'), '-VM')]",
-        "automate": "[concat(parameters('prefix'), '-automate-', variables('uniqueShort'), '-VM')]",
-        "compliance": "[concat(parameters('prefix'), '-compliance-', variables('uniqueShort'), '-VM')]",
-        "workstation": "[concat(parameters('prefix'), '-ws-', variables('uniqueShort'), '-VM')]"
+        "chef": "sra3ta-aapp01",
+        "orchestrationserver": "sra3ta-aapp02",
+        "automate": "sra3ta-aapp03",
+        "compliance": "sra3ta-aapp04",
+        "workstation": "sra3ta-aapp05"
       },
       "computer": {
         "chef": "[concat(parameters('prefix'), '-chef-', variables('uniqueShort'))]",
