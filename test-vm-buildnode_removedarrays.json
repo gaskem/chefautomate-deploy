@@ -231,15 +231,6 @@
               }
             ]
           },
-          "diagnosticsProfile": {
-              "bootDiagnostics": {
-                  "enabled": true,
-                  "storageUri": "[reference(resourceId('AzureDeploy', 'Microsoft.Storage/storageAccounts', parameters('diagnosticsStorageAccountName')), '2015-06-15').primaryEndpoints['blob']]"
-              }
-          },
-          "availabilitySet": {
-              "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetName'))]"
-          }
         }
       },
       {
