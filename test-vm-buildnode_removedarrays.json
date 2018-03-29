@@ -120,30 +120,34 @@
         "type": "string"
       },
       "chef_server_url": {
-          "type": "string",
-          "metadata": {
-            "description": "Organization URL for the Chef Server. Example https://ChefServerDnsName.cloudapp.net/organizations/Orgname"
-          }
-        },
-      "validation_client_name": {
-          "type": "string",
-          "metadata": {
-            "description": "Validator key name for the organization. Example : MyOrg-validator"
-          }
-        },
-        "validation_key": {
-          "type": "string",
-           "metadata": {
-            "description": "JSON Escaped Validation Key"
-          }
-        },
-        "validation_key_format": {
-          "type": "string",
-          "allowedValues": ["plaintext", "base64encoded"],
-          "metadata" : {
-            "description": "Format in which Validation Key is given. e.g. plaintext, base64encoded"
-          }
-        },
+        "type": "string",
+        "defaultValue": "https://gooseipachefmng.ukwest.cloudapp.azure.com/organizations/azuredeploy",
+        "metadata": {
+          "description": "Organization URL for the Chef Server. Example https://ChefServerDnsName.cloudapp.net/organizations/Orgname"
+        }
+      },
+    "validation_client_name": {
+        "type": "string",
+        "defaultValue": "azuredeploy-validator",
+        "metadata": {
+          "description": "Validator key name for the organization. Example : MyOrg-validator"
+        }
+      },
+      "validation_key": {
+        "type": "string",
+        "defaultValue": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA1rkfWWuyquEUnZenXQccxOCEBSGB0+s+OAT5rg0SOb2znoPJ\nD/LAhmI3R5IPlrDG7qDjgVUgs4cw4q+5hfXp/XjeBsTehfeZlgDU44F+2ilOUzuB\nhZs6zjq+//3zgNseoFhBMu5lMkl3nS6BcX8FKa+8YdR3Kf2I2LVOizHfFycq/nF2\nCRERHk8yUR6LQIuk3M+s75Jj3OaVRCn31KbY8ji6GI6nxI7XrTsgklsturVjT9s1\nt3s8cpHIrzjCLJ5V5pYZFvCqmO/zU4iFJhjkSb6Q9t/ILTAaMoBi3bsxexUfSAfZ\nGqtOu/m8xQQA5P3jmASj4WlaiYf8Gqur/kSr7wIDAQABAoIBAFKDEOjr2dyQYbut\na0L0WLnPDOxr09f7rg0Y3Fll7HsDyuI/AiR+xDzfwR5fol3l0Iwih0pLzCUw7jgu\nDrzLov8kUy2GuXwBiaN67lP+jyCGfvK9CyisXgyhxoPYspnxmfND9sn7kieg07Yz\nCMr0ZKeAQIPXgXNBWjTsdyJGJ9RdJIzXyYCArbhKMi96ykQDgizoLSICN8rRKLRb\nMgbwsoC0XvKxC+H68h6FxDYfef4l9W2cOU/f8jrCIbTX9gqyugNKhr9Sa/eRXXay\nMYb8ZAuoxkVDDwNhapp4/8HKeVuKJkOq2P4X3LTI7VtNobGJfVXgMrdlrB4s6bNy\nC9uSYAECgYEA74SzoN97paaXR5ZdmfnUre2OjKtk7hfFd6t1ZJHNnG3ryGsHG5Za\nPyG809OJ/Hy99t9IPBMgX7hEvM01bMRrSO3BRfny7QBH/h8Rwz2qhM2G4NfWYXnD\nKxJsQuvarRy8mfN4El4KqoEzpZAWzrjiIo3E7C5y1WelxInDuBfam28CgYEA5X+i\nSBEVcBfXXPgZzyIkheS9ciKEX9fnqrbq1UW/mv+DmHpMCOWY56fgLtxhdJmyltpw\nGWWkrkQD5J1xK2sJsQR+2N5HyoGWgP71Ncdvj975YEiUF5dIr2k7N75guqFRq+Yd\noooJb7rhEU8AF9UktfycqXjQbQWnleUyxowAt4ECgYEAzZs6n4R4nfBtuHQpkX3W\nxh9A2RxgHcqmJl42/cfzmq75UigeB95/ReZuM+BJeUaTw5JUbc11YvXJe9EkZWQP\nPKFr4ef4Ut6E7m45T0JmWG4dtHFThIWDtjuwV5ojM6uRcw5/KjU0Lr2OWjdgfMBU\nzpioTJ5q0SqSMC6apjND410CgYEAy0p9MQNZDxs/XY40JoRi/+v4WJL02YWCJHm1\nmUgYiy9NnZKvqa3f/Ux6zGfROB0x0mkapZShBPEg1bEVX1WIlzKZPnff9iVGcWvn\nQEUysKneEwkXjbIn46H+n8lXG9rsYq4LkEBgTYWn+tIVDgdzZnWnPIPVdM1uftwx\nVykLNYECgYEA1ZmHSrY5i4gy6bMczaNJ6RJ39yaqspll74Zb5Gp4S9OLjQSyMBqI\nFGLHr0ZMPOr0HP7AWbpY5SF3Z8Sn5/ga9JL9FbziI+lR5Nw2lgTtE4b57emKiy09\nJeBQba8ijKF/6z7Eu/sx/1GVOBr/fQlKrSNdMzkquceSytmpVEYTDnc=\n-----END RSA PRIVATE KEY-----",
+        "metadata": {
+          "description": "JSON Escaped Validation Key"
+        }
+      },
+      "validation_key_format": {
+        "type": "string",
+        "allowedValues": ["plaintext", "base64encoded"],
+        "defaultValue": "plaintext",
+        "metadata" : {
+          "description": "Format in which Validation Key is given. e.g. plaintext, base64encoded"
+        }
+      },
       "adminPassword": {
         "type": "securestring"
       }
