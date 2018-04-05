@@ -1,317 +1,301 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-      "vmName": {
-        "type": "string",
-        "metadata": {
-          "description": "The name for the VM's."
-        }
-      },
-      "adminUsername": {
-        "type": "string",
-        "metadata": {
-          "description": "Username for the Virtual Machine."
-        }
-      },
-      "windowsOSVersion": {
-        "type": "string",
-        "defaultValue": "2016-Datacenter",
-        "metadata": {
-          "description": "The Windows version for the VM. This will pick a fully patched image of this given Windows version. Allowed values: 2008-R2-SP1, 2012-Datacenter, 2012-R2-Datacenter."
-        }
-      },
-      "DataDiskSizes": {
-        "type": "array",
-        "defaultValue": [],
-        "metadata": {
-          "description": "The number of dataDisks to be returned in the output array."
-        }
-      },
-      "privateIPAddress": {
-          "type": "string"
-      },
-      "subnetName": {
-        "type": "string",
-        "metadata": {
-          "description": "The name for the VM's Subnet."
-        }
-      },
-      "runlist": {
-        "type": "string",
-        "metadata": {
-          "description": "Optional Run List to Execute"
-        }
-      },
-      "existingVirtualNetworkName": {
-        "type": "string",
-        "metadata": {
-          "description": "The name for the VM's VNET."
-        }
-      },
-      "existingNetworkSG": {
-          "type": "string",
-          "metadata": {
-            "description": "The name of Network Security Group to use"
-          }
-        },
-      "domainToJoin":
-      {
-        "type": "string",
-        "metadata":
-        {
-          "description": "The domain user alias to use when joining the machine to the specified domain"
-        }
-      },
-      "ouPath":
-      {
-        "type": "string",
-        "metadata":
-        {
-          "description": "Specifies an organizational unit (OU) for the domain account. Enter the full distinguished name of the OU in quotation marks. Example: 'OU=testOU; DC=domain; DC=Domain; DC=com"
-        }
-      },
-      "domainUsername":
-      {
-        "type": "string",      
-        "minLength": 1,
-        "metadata":
-        {
-          "description": "The domain user alias to use when joining the machine to the specified domain"
-        }
-      },
-      "domainPassword":
-      {
-        "type": "securestring",
-        "minLength": 1,
-        "metadata":
-        {
-          "description": "The password of the domain user to use when joining the machine to the specified domain"
-        }
-      },
-      "domainJoinOptions":
-      {
-        "type": "int",
-        "defaultValue": 3,
-        "metadata":
-        {
-          "description": "Set of bit flags that define the join options. Default value of 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx"
-        }
-      },
-      "backupVaultName": {
-        "type": "string"
-      },
-      "backupFabricName": {
-        "type": "string"
-      },
-      "backupVaultRGName": {
-        "type": "string"
-      },
-      "backupVaultRGIsNew": {
-        "type": "bool",
-        "defaultValue": false,
-        "metadata": {
-          "description": "Set to create new Backup VAult or use Existing"
-        }
-      },
-      "backupPolicyName": {
-        "type": "string"
-      },
-      "availabilitySetName": {
-        "type": "string"
-      },
-      "diagnosticsStorageAccountName": {
-        "type": "string"
-      },
-      "chef_server_url": {
-          "type": "string",
-          "metadata": {
-            "description": "Organization URL for the Chef Server. Example https://ChefServerDnsName.cloudapp.net/organizations/Orgname"
-          }
-        },
-      "validation_client_name": {
-          "type": "string",
-          "metadata": {
-            "description": "Validator key name for the organization. Example : MyOrg-validator"
-          }
-        },
-        "validation_key": {
-          "type": "string",
-           "metadata": {
-            "description": "JSON Escaped Validation Key"
-          }
-        },
-        "validation_key_format": {
-          "type": "string",
-          "allowedValues": ["plaintext", "base64encoded"],
-          "metadata" : {
-            "description": "Format in which Validation Key is given. e.g. plaintext, base64encoded"
-          }
-        },
-      "adminPassword": {
-        "type": "securestring"
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name for the VM's."
       }
     },
-    "variables": {
-      "imagePublisher": "MicrosoftWindowsServer",
-      "imageOffer": "WindowsServer",
-      "nicName": "[concat(parameters('vmName'), '01')]",
-      "subnetName": "[parameters('subnetName')]",
-      "existingNetworkSG": "[parameters('existingNetworkSG')]",
-      "existingVirtualNetworkName": "[parameters('existingVirtualNetworkName')]",
-      "vmName": "[parameters('vmName')]",
-      "vmSize": "Basic_A1",
-      "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('existingVirtualNetworkName'))]",
-      "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-      "apiVersion": "2015-06-15",
-      "domainJoinOptions": "3",
-      "ouPath": "",    
-      "keyVaultRef": "/subscriptions/0db10018-0da9-473b-afdb-306000b3a80d/resourceGroups/AzureDeploy/providers/Microsoft.KeyVault/vaults/aztestdomvault",
-      "backupItemName": "[concat('vm;iaasvmcontainerv2;AzureDeploy;', parameters('vmName'))]",
-      "chef_node_name": "[parameters('vmName')]",
-      "vmExtensionName": "ChefExtension"  
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Username for the Virtual Machine."
+      }
     },
-    "resources": [
+    "windowsOSVersion": {
+      "type": "string",
+      "defaultValue": "2016-Datacenter",
+      "metadata": {
+        "description": "The Windows version for the VM. This will pick a fully patched image of this given Windows version. Allowed values: 2008-R2-SP1, 2012-Datacenter, 2012-R2-Datacenter."
+      }
+    },
+    "vmSize": {
+      "type": "string"
+    },
+    "privateIPAddress": {
+        "type": "string"
+    },
+    "subnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name for the VM's Subnet."
+      }
+    },
+    "runlist": {
+      "type": "string",
+      "metadata": {
+        "description": "Optional Run List to Execute"
+      }
+    },
+    "existingVirtualNetworkName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name for the VM's VNET."
+      }
+    },
+    "existingNetworkSG": {
+        "type": "string",
+        "metadata": {
+          "description": "The name of Network Security Group to use"
+        }
+      },
+    "domainToJoin":
+    {
+      "type": "string",
+      "metadata":
       {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/networkInterfaces",
-        "name": "[variables('nicName')]",
-        "location": "[resourceGroup().location]",
-        "dependsOn": [
-        ],
-        "properties": {
-          "ipConfigurations": [
-            {
-              "name": "ipconfig1",
-              "properties": {
-                "privateIPAllocationMethod": "Static",
-                "privateIPAddress": "[parameters('privateIPAddress')]",
-                "subnet": {
-                  "id": "[variables('subnetRef')]"
-                }
+        "description": "The domain user alias to use when joining the machine to the specified domain"
+      }
+    },
+    "ouPath":
+    {
+      "type": "string",
+      "metadata":
+      {
+        "description": "Specifies an organizational unit (OU) for the domain account. Enter the full distinguished name of the OU in quotation marks. Example: 'OU=testOU; DC=domain; DC=Domain; DC=com"
+      }
+    },
+    "domainUsername":
+    {
+      "type": "string",      
+      "minLength": 1,
+      "metadata":
+      {
+        "description": "The domain user alias to use when joining the machine to the specified domain"
+      }
+    },
+    "domainPassword":
+    {
+      "type": "securestring",
+      "minLength": 1,
+      "metadata":
+      {
+        "description": "The password of the domain user to use when joining the machine to the specified domain"
+      }
+    },
+    "domainJoinOptions":
+    {
+      "type": "int",
+      "defaultValue": 3,
+      "metadata":
+      {
+        "description": "Set of bit flags that define the join options. Default value of 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx"
+      }
+    },
+    "backupVaultName": {
+      "type": "string"
+    },
+    "backupFabricName": {
+      "type": "string"
+    },
+    "backupVaultRGName": {
+      "type": "string"
+    },
+    "backupVaultRGIsNew": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Set to create new Backup VAult or use Existing"
+      }
+    },
+    "backupPolicyName": {
+      "type": "string"
+    },
+    "availabilitySetName": {
+      "type": "string"
+    },
+    "diagnosticsStorageAccountName": {
+      "type": "string"
+    },
+    "chef_server_url": {
+      "type": "string",
+      "defaultValue": "https://chefservera1.uksouth.cloudapp.azure.com/organizations/azuredeploy",
+      "metadata": {
+        "description": "Organization URL for the Chef Server. Example https://ChefServerDnsName.cloudapp.net/organizations/Orgname"
+      }
+    },
+  "validation_client_name": {
+      "type": "string",
+      "defaultValue": "azuredeploy-validator",
+      "metadata": {
+        "description": "Validator key name for the organization. Example : MyOrg-validator"
+      }
+    },
+    "validation_key": {
+      "type": "string",
+      "defaultValue": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEArzaAR+GKkBiz9CP+Iot3AiS+Yx/UkgY2uzzwHnD5fTadhFGr\nVsthLq8g3xXobMuV7bMKXscTbX+ISFjZQazq6AJKM+m6L2rNWUNzs8HYXA6t5yD7\nQo2+Tpm3XIyOJcN3lvSh8s18lwXzoa3LPMNuvMFyB/H09aHnrjaq73POgObmoABO\nJI0vGmZ53pKDkwf29DW0hO+ERVBHv4sZwHPvCTNIxcGKgCCQ7gR6TqQ0pHI+b7Ee\nkC3qMPR6VKBUwsVg4VG+0p+UpuzLmZToM0JvwvGTRiLAws/zoOn6aNHfPOJkp4FP\nte/BN3XT2qtHVUFpAktH52dzip9CTItMziJ5oQIDAQABAoIBAFEW/TnHRXS5KhfU\nzJo6R6LjVIXVxnCqlYwEgPDlwmHT9AS4M38g82JCxQjaP86STlpLYYJJylEEFBO/\noxUFLVahMKxkALpPSKiGUjcggLziQlPU7NR5e1kvRTB9EJCjrWZc49LWjVHr/DyY\njZYasNaFBPxuW7uO6gWz4VqfEzSOZKJkh6dQKlHbP2jqamhtL7IBzrPPdpwPlF3Z\nBdEPxJ4HnVhpxqNJPAFOfMFJcELBVY/cBr+rNbKu0BWoJxtgd6UZnfC+76AGpRK3\nk6pjm41TtX9/VbhvNksrQKt+t1sQi1e69dlCG5WkhgOhDcI6KKnVKg++NiTqkPt8\nE5Uo5q0CgYEA1oMw65X9IIq7ciu46Ns1kiwn4MaTlMh+NKW4CrJDpkaeltIZb5SA\n7Wg22vPrpV6lFNxDYBxkrimu4iSdZNnncDuG793AUkazgucsvFRamO2p4by5WWnd\nWMFGt7y/Ca3iDkIPMzPfGfS0dQq5oOMldeYmVMQ6jAYsQRQzXSuYOe8CgYEA0RmI\nrlNy8x80uK4VMIQngPQIHZTu5JQSYICfd3XJiStFcDpGXfozbszxC6cRxshD4TU4\n+Hs2vBNjPzT2wGDbR/tspAJ6kH+vxEz73y7qn/072nYrYhl+p9n2GBFv7lUcWwTp\nmluyO+uXpz6v9xbuJ2wkYHBb27MztmWvDitrVW8CgYAI+Zg0YyQiFmvdTQMBixpk\nsUBB4U0PbowJO93FZMv7yvybptK1nmr+g9u3sXjshFc31jdjcAyuVMQiZhHHxG4w\nfe0ZYBfJ2XdtRKrUflsEBv2SmkjO+uTt77g7u8PqbcIFgrIMHGF7PofGVdqKZraM\nhkKYTVV9wkxbtLKpdUd7NQKBgQCnWexOuXMyqjMj7BABeIO1bZphMqXQQ8JBgjAf\nCCJ4qi01GS7gYDNx5oy1as2LbxUE1ff2x4aTGGFCYT1r0xktj0jwKxu1MryWO5cK\nlR4rVh3lRtaJ+SWpaYTQ1oPjGDNNlazxYZpQ4snJjR6Af9Wzr5Wdqc+bEt28ib2F\ndbK9+QKBgFmDxfMRmzkPVcqpLylMq3cFf/R9dX0knVwUplSjPUUnJS1FHqzBWooM\n1AXkOm+MGKAXQeRH8KvbBwdmxPsNLiD/KTPi6I1SU3mUGN0FKOGqhL/U2q2PITUk\nAs6CtO6kqoce1yP9yhIOM1WkIoeJcJQ0+jQQ/Unml0dnLJUTBh8E\n-----END RSA PRIVATE KEY-----",
+      "metadata": {
+        "description": "JSON Escaped Validation Key"
+      }
+    },
+    "validation_key_format": {
+      "type": "string",
+      "allowedValues": ["plaintext", "base64encoded"],
+      "defaultValue": "plaintext",
+      "metadata" : {
+        "description": "Format in which Validation Key is given. e.g. plaintext, base64encoded"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring"
+    }
+  },
+  "variables": {
+    "imagePublisher": "MicrosoftWindowsServer",
+    "imageOffer": "WindowsServer",
+    "nicName": "[concat(parameters('vmName'), '01')]",
+    "subnetName": "[parameters('subnetName')]",
+    "existingNetworkSG": "[parameters('existingNetworkSG')]",
+    "existingVirtualNetworkName": "[parameters('existingVirtualNetworkName')]",
+    "vmName": "[parameters('vmName')]",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('existingVirtualNetworkName'))]",
+    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
+    "apiVersion": "2015-06-15",
+    "domainJoinOptions": "3",
+    "ouPath": "",    
+    "keyVaultRef": "/subscriptions/0db10018-0da9-473b-afdb-306000b3a80d/resourceGroups/AzureDeploy/providers/Microsoft.KeyVault/vaults/aztestdomvault",
+    "backupItemName": "[concat('vm;iaasvmcontainerv2;AzureDeploy;', parameters('vmName'))]",
+    "chef_node_name": "[parameters('vmName')]",
+    "vmExtensionName": "ChefExtension"  
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('privateIPAddress')]",
+              "subnet": {
+                "id": "[variables('subnetRef')]"
               }
             }
-          ],
-          "enableIPForwarding": false,
-          "networkSecurityGroup": {
-                  "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('existingNetworkSG'))]"
-               }
-        }
-      },
-      {
-        "apiVersion": "2016-04-30-preview",
-        "type": "Microsoft.Compute/virtualMachines",
-        "name": "[variables('vmName')]",
-        "location": "[resourceGroup().location]",
-        "dependsOn": [
-          "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
-        ],
-        "properties": {
-          "hardwareProfile": {
-            "vmSize": "[variables('vmSize')]"
-          },
-          "osProfile": {
-            "computerName": "[variables('vmName')]",
-            "adminUsername": "[parameters('adminUsername')]",
-            "adminPassword": "[parameters('adminPassword')]"
-          },
-          "storageProfile": {
-            "imageReference": {
-              "publisher": "[variables('imagePublisher')]",
-              "offer": "[variables('imageOffer')]",
-              "sku": "[parameters('windowsOSVersion')]",
-              "version": "latest"
-            },
-            "osDisk": {
-              "createOption": "FromImage",
-              "managedDisk": {
-                  "storageAccountType": "Standard_LRS"
-              }
-            },
-            "copy": [
-              {
-                "name": "dataDisks",
-                "count": "[length(parameters('DataDiskSizes'))]",
-                "input": {
-                  "diskSizeGB": "[parameters('DataDiskSizes')[copyIndex('dataDisks')]]",
-                  "lun": "[copyIndex('dataDisks')]",
-                  "createOption": "Empty",
-                  "managedDisk": {
-                    "storageAccountType": "Standard_LRS"
-                  }
-                }
-              }
-            ]
-          },
-          "networkProfile": {
-            "networkInterfaces": [
-              {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
-              }
-            ]
           }
-        }
-      },
-      {
-          "apiVersion": "2016-04-30-preview",
-          "type": "Microsoft.Compute/virtualMachines/extensions",
-          "name": "[concat(parameters('vmName'),'/joindomain')]",
-          "location": "[resourceGroup().location]",
-          "dependsOn":
-          [
-            "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
-          ],
-          "tags":
-          {
-            "displayName": "JsonADDomainExtension"
+        ],
+        "enableIPForwarding": false,
+        "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('existingNetworkSG'))]"
+             }
+      }
+    },
+    {
+      "apiVersion": "2016-04-30-preview",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vmName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
+            "sku": "[parameters('windowsOSVersion')]",
+            "version": "latest"
           },
-          "properties":
-          {
-            "publisher": "Microsoft.Compute",
-            "type": "JsonADDomainExtension",
-            "typeHandlerVersion": "1.3",
-            "autoUpgradeMinorVersion": true,
-            "settings":
-            {
-              "Name": "[parameters('domainToJoin')]",
-              "OUPath": "[parameters('ouPath')]",
-              "User": "aztestdom\\azjoinDomain",
-              "Restart": "true",
-              "Options": "[parameters('domainJoinOptions')]"
-            },
-            "protectedSettings":
-            {
-              "Password": "[parameters('domainPassword')]"
+          "osDisk": {
+            "createOption": "FromImage",
+            "managedDisk": {
+                "storageAccountType": "Standard_LRS"
             }
           }
         },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+            }
+          ]
+        }
+      }
+    },
+    {
+        "apiVersion": "2016-04-30-preview",
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(parameters('vmName'),'/joindomain')]",
+        "location": "[resourceGroup().location]",
+        "dependsOn":
+        [
+          "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+        ],
+        "tags":
         {
-          "type": "Microsoft.Compute/virtualMachines/extensions",
-          "name": "[concat(variables('vmName'),'/', variables('vmExtensionName'))]",
-          "apiVersion": "2015-05-01-preview",
-          "location": "[resourceGroup().location]",
-          "dependsOn": [
-            "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
-          ],
-          "properties": {
-              "publisher": "Chef.Bootstrap.WindowsAzure",
-              "type": "ChefClient",
-              "typeHandlerVersion": "1210.12",
-              "settings": {
-                "client_rb": "ssl_verify_mode :verify_none\n",
-                "bootstrap_options": {
-                  "chef_node_name": "[variables('chef_node_name')]",
-                  "chef_server_url": "[parameters('chef_server_url')]",
-                  "validation_client_name": "[parameters('validation_client_name')]"
-                },
-                "runlist": "[parameters('runlist')]",
-                "validation_key_format": "[parameters('validation_key_format')]"
+          "displayName": "JsonADDomainExtension"
+        },
+        "properties":
+        {
+          "publisher": "Microsoft.Compute",
+          "type": "JsonADDomainExtension",
+          "typeHandlerVersion": "1.3",
+          "autoUpgradeMinorVersion": true,
+          "settings":
+          {
+            "Name": "[parameters('domainToJoin')]",
+            "OUPath": "[parameters('ouPath')]",
+            "User": "aztestdom\\azjoinDomain",
+            "Restart": "true",
+            "Options": "[parameters('domainJoinOptions')]"
+          },
+          "protectedSettings":
+          {
+            "Password": "[parameters('domainPassword')]"
+          }
+        }
+      },
+      {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(variables('vmName'),'/', variables('vmExtensionName'))]",
+        "apiVersion": "2015-05-01-preview",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+        ],
+        "properties": {
+            "publisher": "Chef.Bootstrap.WindowsAzure",
+            "type": "ChefClient",
+            "typeHandlerVersion": "1210.12",
+            "settings": {
+              "client_rb": "ssl_verify_mode :verify_none\n",
+              "bootstrap_options": {
+                "chef_node_name": "[variables('chef_node_name')]",
+                "chef_server_url": "[parameters('chef_server_url')]",
+                "validation_client_name": "[parameters('validation_client_name')]"
               },
-              "protectedSettings": {
-                "validation_key": "[parameters('validation_key')]"
-              }
+              "runlist": "[parameters('runlist')]",
+              "validation_key_format": "[parameters('validation_key_format')]"
+            },
+            "protectedSettings": {
+              "validation_key": "[parameters('validation_key')]"
             }
           }
-    ]
-  }
-  
+        }
+  ]
+}
