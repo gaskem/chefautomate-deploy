@@ -233,9 +233,8 @@
             "managedDisk": {
                 "storageAccountType": "Standard_LRS"
             }
-          }
-        },
-        "copy": [
+          },
+          "copy": [
             {
               "name": "dataDisks",
               "count": "[length(parameters('DataDiskSizes'))]",
@@ -248,7 +247,8 @@
                 }
               }
             }
-          ],
+          ]
+        },
         "networkProfile": {
           "networkInterfaces": [
             {
