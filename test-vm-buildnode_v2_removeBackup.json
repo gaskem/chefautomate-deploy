@@ -310,7 +310,7 @@
                 "chef_server_url": "[parameters('chef_server_url')]",
                 "validation_client_name": "[parameters('validation_client_name')]"
               },
-              "runlist": "[parameters('runlist')]",
+              "runlist": "recipe[ServerBuild::postdeploy]",
               "validation_key_format": "[parameters('validation_key_format')]"
             },
             "protectedSettings": {
